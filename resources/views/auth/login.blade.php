@@ -4,14 +4,6 @@
 
 @section('body')
 
-@if ($errors->any())
-  <ul>
-    @foreach ($errors->all() as $error)
-      <li>{{ $error }}</li>
-    @endforeach
-  </ul>
-@endif
-
 <div class="min-h-screen flex items-center justify-center pb-60">
     <form class="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4" method="POST" action="{{ route('login') }}" >
     @csrf
