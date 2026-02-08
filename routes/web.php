@@ -5,6 +5,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+use GuzzleHttp\Handler\Proxy;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -33,5 +35,5 @@ Route::prefix('admin')
             ->name('admin.dashboard');
 
         Route::resource('categories', CategoryController::class);
-
+        Route::resource('products', ProductController::class);
 });

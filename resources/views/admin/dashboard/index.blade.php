@@ -8,7 +8,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
 
-        <a href="{{ route('articles.index') }}"
+        <a href="{{ route('products.index') }}"
            class="card bg-base-100 shadow-xl hover:shadow-2xl transition duration-300 hover:-translate-y-1">
 
             <div class="card-body items-center text-center p-10">
