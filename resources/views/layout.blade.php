@@ -7,8 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
-    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/markdown-text-editor@0.5.0/dist/markdown-text-editor.min.js"></script>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-text-editor@0.5.0/dist/markdown-text-editor.min.css">
     <title>@yield('title')</title>
 </head>
 
@@ -16,7 +16,7 @@
 
     <div class="navbar bg-base-100 shadow-sm">
         <div class="flex-1">
-            <a class="btn btn-ghost text-xl">E-commerce</a>
+            <a href="{{ route('home') }}" class="btn btn-ghost text-xl">E-commerce</a>
         </div>
         <div class="flex-none">
             <div class="dropdown dropdown-end">

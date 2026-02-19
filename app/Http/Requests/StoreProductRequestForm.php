@@ -23,7 +23,7 @@ class StoreProductRequestForm extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'content' => 'required|string',
             'category_id' => 'nullable|exists:categories,id',
 
             'image' => 'nullable|image|max:2048',

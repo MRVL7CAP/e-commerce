@@ -24,48 +24,66 @@
             </form>
         </div>
 
-        <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <div class="mt-6 overflow-x-auto bg-base-100 rounded-lg shadow">
             @forelse($products as $product)
-                <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition duration-300">
-
-                    <figure class="px-5 pt-5">
-                        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://placehold.co/600x400' }}"
-                            class="rounded-xl w-full object-cover h-40" alt="{{ $product->title }}" />
-                    </figure>
-
-                    <div class="card-body pt-4">
-                        <h2 class="card-title text-lg leading-tight">
-                            {{ $product->title }}
-                        </h2>
-
-                        <div class="text-sm opacity-70">
-                            {{ $product->created_at?->format('d/m/Y') }}
-                            @if (isset($product->is_published))
-                                •
-                                @if ($product->is_published)
-                                    <span class="badge badge-success badge-sm">Published</span>
-                                @else
-                                    <span class="badge badge-ghost badge-sm">Draft</span>
-                                @endif
-                            @endif
-                        </div>
-
-                        <div class="card-actions justify-end mt-3">
-                            <a href="{{ route('products.edit', $product) }}" class="btn btn-sm btn-outline btn-info">✏️</a>
-
-                            <form method="POST" action="{{ route('products.destroy', $product) }}"
-                                onsubmit="return confirm('Delete this product?')">
-                                @csrf
-                                @method('DELETE')
-                                <button class="btn btn-sm btn-outline btn-error">🗑</button>
-                            </form>
-                        </div>
-                    </div>
-
-                </div>
+                @if ($loop->first)
+                    <table class="table table-zebra w-full">
+                        <thead class="bg-base-200">
+                            <tr>
+                                <th class="text-base font-semibold">Image</th>
+                                <th class="text-base font-semibold">Title</th>
+                                <th class="text-base font-semibold">Price</th>
+                                <th class="text-base font-semibold">Created</th>
+                                <th class="text-base font-semibold">Status</th>
+                                <th class="text-base font-semibold text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                @endif
+                            <tr class="hover:bg-base-200 transition">
+                                <td>
+                                    <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://placehold.co/100x80' }}"
+                                        class="rounded w-16 h-12 object-cover" alt="{{ $product->title }}" />
+                                </td>
+                                <td>
+                                    <p class="font-semibold">{{ $product->title }}</p>
+                                </td>
+                                <td>
+                                    <p class="font-semibold text-lg">{{ number_format($product->price, 2) }} €</p>
+                                </td>
+                                <td>
+                                    <p class="text-sm opacity-70">{{ $product->created_at?->format('d/m/Y') }}</p>
+                                </td>
+                                <td>
+                                    @if (isset($product->is_published))
+                                        @if ($product->is_published)
+                                            <span class="badge badge-success badge-sm">Published</span>
+                                        @else
+                                            <span class="badge badge-ghost badge-sm">Draft</span>
+                                        @endif
+                                    @else
+                                        <span class="badge badge-warning badge-sm">N/A</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    <div class="flex gap-2 justify-center">
+                                        <a href="{{ route('products.edit', $product) }}" class="btn btn-xs btn-outline btn-info">✏️</a>
+                                        <form method="POST" action="{{ route('products.destroy', $product) }}"
+                                            onsubmit="return confirm('Delete this product?')" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-xs btn-outline btn-error">🗑</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                @if ($loop->last)
+                        </tbody>
+                    </table>
+                @endif
             @empty
-                <div class="col-span-full text-center opacity-60 py-16">
-                    No products yet.
+                <div class="p-12 text-center opacity-60">
+                    <p class="text-lg">No products yet.</p>
                 </div>
             @endforelse
         </div>

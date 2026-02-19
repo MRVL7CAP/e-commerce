@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Product;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -37,34 +38,37 @@ class ProductController extends Controller
     public function store(StoreProductRequestForm $request)
     {
 
-    $payload = $request->validated($request->all());
 
-    $slug = Str::slug($payload->title);
-    if (Product::where('slug', $slug)->exists()) {
-        $slug .= '-' . time();
-    }
+        $payload = $request->validated();
 
-    $imagePath = null;
-    if ($payload->hasFile('image')) {
-        $imagePath = $payload->file('image')->store('products', 'public');
-    }
 
-    Product::create([
-        'title' => $payload->title,
-        'slug' => $slug,
-        'description' => $payload->description,
-        'category_id' => $payload->category_id,
-        'image' => $imagePath,
 
-        'price' => $payload->price,
-        'old_price' => $payload->old_price,
-        'rating' => $payload->rating,
-        'rating_count' => $payload->rating_count ?? 0,
-        'is_published' => $payload->has('is_published'),
-    ]);
+        $slug = Str::slug($payload["title"]);
+        if (Product::where('slug', $slug)->exists()) {
+            $slug .= '-' . time();
+        }
 
-    return redirect()->route('products.index')
-        ->with('success', 'product created successfully');
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
+
+        Product::query()->create([
+            'title' => $payload["title"],
+            'slug' => $slug,
+            'content' => $payload["content"],
+            'category_id' => $payload["category_id"],
+            'image' => $imagePath,
+
+            'price' => $payload["price"],
+            'old_price' => $payload["old_price"],
+            'rating' => $payload["rating"],
+            'rating_count' => $payload["rating_count"] ?? 0,
+            'is_published' => $request->has('is_published'),
+        ]);
+
+        return redirect()->route('products.index')
+            ->with('success', 'product created successfully');
     }
 
     /**
@@ -78,24 +82,47 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        //
+        $categories = Category::orderBy('name')->get();
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreProductRequestForm $request, Product $product)
     {
-        //
+        $payload = $request->validated();
+
+        $payload['is_published'] = $request->has('is_published');
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $payload['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        $product->update($payload);
+
+        return redirect()->route('products.index')
+            ->with('success', 'product updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+
+        if ($product->image) {
+            Storage::disk("public")->delete($product->image);
+        }
+        $product->delete();
+        return redirect()->route('products.index')
+            ->with('success', 'product deleted successfully');
     }
 }
