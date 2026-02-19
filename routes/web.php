@@ -6,13 +6,11 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
-use GuzzleHttp\Handler\Proxy;
+use App\Http\Controllers\HomeController;
+
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('Homepage');
-})->name('home');
-
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'show'])->name('register');
     Route::post('/register', [RegisterController::class, 'store']);
