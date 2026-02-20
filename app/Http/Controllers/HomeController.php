@@ -20,13 +20,15 @@ class HomeController extends Controller
             $query->where('category', "=", $request->query('category'));
         };
 
-        $products = $query->with('category')->latest()->paginate(8)->withQueryString();
+        $query->where('is_published', true);
 
+        $products = $query->with('category')->latest()->paginate(8)->withQueryString();
         $categories = Category::all();
-        return view('Homepage', compact('products', 'categories'));
+
+        return view('homepage', compact('products', 'categories'));
     }
 
     public function show(Product $product) {
-        $product::query()->with('category');
+        $product::query()->load('category');
     }
 }
