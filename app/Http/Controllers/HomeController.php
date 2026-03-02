@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use FastVolt\Helper\Markdown;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -28,7 +30,16 @@ class HomeController extends Controller
         return view('homepage', compact('products', 'categories'));
     }
 
-    public function show(Product $product) {
-        $product::query()->load('category');
+    public function show(Product $product)
+    {
+
+        abort_unless($product->is_published, 404);
+
+        $product->load('category');
+
+
+        $product->content =  (new Markdown())->setContent($product->content)->getHtml();
+
+        return view('products.show', compact('product'));
     }
 }

@@ -1,4 +1,3 @@
-{{-- resources/views/home.blade.php --}}
 @extends('layout')
 
 @section('body')
@@ -7,20 +6,16 @@
 
     @foreach($products as $product)
       @php
-        // Image: accepte URL directe ou chemin storage
         $img = $product->image;
         $isUrl = $img && (str_starts_with($img, 'http://') || str_starts_with($img, 'https://'));
-        $imgSrc = $img ? ($isUrl ? $img : asset('storage/'.$img)) : 'https://placehold.co/420x420';
+        $imgSrc = $img ? ($isUrl ? $img : asset('storage/'.$img)) : 'https://placehold.co/420x420?text=Produit';
 
-        // Rating
         $rating = (float) ($product->rating ?? 0);
         $ratingCount = (int) ($product->rating_count ?? 0);
 
-        // Prix (format FR)
         $price = number_format((float)$product->price, 2, ',', ' ') . ' €';
         $oldPrice = $product->old_price ? number_format((float)$product->old_price, 2, ',', ' ') . ' €' : null;
 
-        // Etoiles pleines/vides (arrondi au 0.5 si tu veux, ici simple)
         $fullStars = (int) floor($rating);
         $hasHalf = ($rating - $fullStars) >= 0.5;
       @endphp
@@ -42,11 +37,9 @@
 
           <div class="flex items-center gap-2 text-sm">
             <div class="rating rating-sm">
-              {{-- 5 étoiles --}}
               @for($i=1; $i<=5; $i++)
                 @php
                   $filled = $i <= $fullStars;
-                  // Si tu veux gérer une demi-étoile proprement, dis-moi (daisyUI a un mask-star-2 mais pas half natif)
                 @endphp
                 <input
                   type="radio"
@@ -79,7 +72,6 @@
               @endif
             </div>
 
-            {{-- Optionnel: petit badge "neuf" comme ton screenshot --}}
             @if($oldPrice)
               <div class="mt-1 text-sm text-base-content/60">
                 <span class="line-through">{{ $oldPrice }}</span>
@@ -89,7 +81,7 @@
           </div>
 
           <div class="card-actions mt-4 justify-end">
-            <a href="{{ route('products.show', $product->slug) }}"
+            <a href="{{ route('products.show', $product) }}"
                class="btn btn-primary btn-sm">
               Voir
             </a>
