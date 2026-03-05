@@ -5,8 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    @vite( ['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.5.19/src/index.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/markdown-text-editor@0.5.0/dist/markdown-text-editor.min.js"></script>
    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-text-editor@0.5.0/dist/markdown-text-editor.min.css">
     <title>@yield('title')</title>
