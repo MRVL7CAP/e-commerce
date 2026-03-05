@@ -19,6 +19,8 @@
 @endphp
 
 <section class="max-w-6xl mx-auto px-4 py-8">
+   
+
   {{-- Breadcrumb --}}
   <div class="text-sm breadcrumbs mb-6">
     <ul>

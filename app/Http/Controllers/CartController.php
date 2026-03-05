@@ -3,10 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Termwind\Components\Raw;
+use App\Models\Product;
+
 
 class CartController extends Controller
 {
+
+
+
+    public function index (Request $request) {
+        return view('cart.index');
+    }
     public function store(Request $request)
     {
         //valider les donner
@@ -27,15 +34,13 @@ class CartController extends Controller
         $cart = session()->get("cart", []);
 
         if (isset($cart[$product_id])) {
-            dump("dfgldfgdlf");
             $cart[$product_id] += $quantity;
         } else {
             $cart[$product_id] = $quantity;
         }
 
         session()->put("cart", $cart);
-        dd(session()->get("cart", []));
-       // return redirect()->back()->with("success", "produit ajoute au panier");
+        return redirect()->back()->with("success", "produit ajoute au panier");
 
 
     }
