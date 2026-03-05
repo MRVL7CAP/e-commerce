@@ -16,6 +16,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/products/{product:slug}', [HomeController::class, 'show'])
     ->name('products.show');
 
+
+Route::get('/cart', [CartController::class, 'index'])
+    ->name('cart.index');
 Route::post('/cart/store', [CartController::class, 'store'])
     ->name('cart.store');
 
@@ -42,4 +45,4 @@ Route::prefix('admin')
 
         Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductController::class);
-});
+    });

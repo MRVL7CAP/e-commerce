@@ -24,10 +24,10 @@ class StoreProductRequestForm extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'category_id' => 'nullable|exists:categories,id',
+            'category_id' => 'required|exists:categories,id',
 
             'image' => 'nullable|image|max:2048',
-            'price' => 'nullable|numeric|min:0',
+            'price' => 'required|numeric|min:0',
             'old_price' => 'nullable|numeric|min:0',
             'rating' => 'nullable|numeric|min:0|max:5',
             'rating_count' => 'nullable|integer|min:0',
