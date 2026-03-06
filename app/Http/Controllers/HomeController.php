@@ -17,7 +17,7 @@ class HomeController extends Controller
 
         if ($request->filled('q')) {
             $query->where('title', 'like', '%' . $request->q . '%');
-        }
+        };
         if ($request->filled('category')) {
             $query->where('category', "=", $request->query('category'));
         };

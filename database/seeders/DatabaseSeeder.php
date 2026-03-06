@@ -17,11 +17,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create([
+        /*User::create([
             'name' => 'Admin',
             'email' => 'admin@test.com',
             'password' => 'motdepass',
             'role' => 'ADMIN',
+        ]); */
+        $this->call([
+            CategorySeeder::class,
         ]);
     }
 }

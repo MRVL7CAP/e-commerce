@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,18 @@ Route::get('/cart', [CartController::class, 'index'])
     ->name('cart.index');
 Route::post('/cart/store', [CartController::class, 'store'])
     ->name('cart.store');
+
+Route::post('/checkout', [CheckoutController::class, 'checkout'])
+    ->name('checkout')
+    ->middleware('auth');
+
+Route::get('/checkout/success', [CheckoutController::class, 'success'])
+    ->name('checkout.success')
+    ->middleware('auth');
+
+Route::get('/checkout.cancel', [CheckoutController::class, 'cancel'])
+    ->name('checkout.cancel')
+    ->middleware('auth');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'show'])->name('register');
