@@ -61,4 +61,11 @@ class CategoryController extends Controller
         return redirect()->route('categories.index')
             ->with('success', 'Catégorie supprimée');
     }
+
+    public function count()
+    {
+        $categories = Category::withCount('products')->get();
+
+        return response()->json($categories);
+    }
 }

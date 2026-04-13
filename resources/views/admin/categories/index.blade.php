@@ -70,3 +70,11 @@
         </div>
     </div>
 @endsection
+
+@foreach ($categories as $category)
+    <tr>
+        <td>{{$category->name}}</td>
+        <td>{{$category->products()->count()}}</td>
+    </tr>
+
+@endforeach

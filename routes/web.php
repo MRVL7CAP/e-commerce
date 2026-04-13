@@ -43,6 +43,10 @@ Route::prefix('admin')
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('admin.dashboard');
 
-        Route::resource('categories', CategoryController::class);
+
         Route::resource('products', ProductController::class);
+        Route::get('categories/products-count', [CategoryController::class, 'count']);
+Route::resource('categories', CategoryController::class);
+
     });
+
