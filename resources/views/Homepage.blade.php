@@ -4,6 +4,7 @@
 <section class="max-w-6xl mx-auto px-4 py-10">
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
+
     @foreach($products as $product)
       @php
         $img = $product->image;
@@ -89,7 +90,7 @@
         </div>
       </article>
     @endforeach
-            </div> 
+            </div>
             {{ $products->links() }}
         </div>
 </section>

@@ -2,20 +2,19 @@
 
 use Livewire\Component;
 use App\Models\Product;
+use Illuminate\Support\Facades\Session;
 
-
-new class extends Component
-{
+new class extends Component {
     public $cart = [];
 
     public function mount()
     {
-        $this->cart = session()->get('cart', []);
+        $this->cart = Session::get('cart', []);
     }
 
-    public function getCartItemProperty()
+    public function getCartItemsProperty()
     {
-        if(empty($this->cart)) {
+        if (empty($this->cart)) {
             return [];
         }
 
@@ -26,27 +25,60 @@ new class extends Component
             $items[] = [
                 'product' => $product,
                 'quantity' => $this->cart[$product->id],
-                'subtotal' => $product->price * $this->cart[$product->id]
-        ];
+                'subtotal' => $product->price * $this->cart[$product->id],
+            ];
         }
         return $items;
     }
 
-
-    public function increment () {
-        dd('increment');
-    }
-    public function decrement () {
-        dd('decrement');
+    public function updateSession(): void
+    {
+        Session::put('cart', $this->cart);
     }
 
+    public function increment(int $id): void
+    {
+        if (isset($this->cart[$id])) {
+            $this->cart[$id]++;
+            $this->updateSession();
+            $this->cart = $this->cart; // Trigger reactivity
+        }
+    }
+    public function decrement(int $id): void
+    {
+        if (isset($this->cart[$id])) {
+            if ($this->cart[$id] > 1) {
+                $this->cart[$id]--;
+                $this->updateSession();
+            }
+        }
+    }
+
+    public function remove(int $id): void
+    {
+        if (isset($this->cart[$id])) {
+            unset($this->cart[$id]);
+            $this->updateSession();
+        }
+    }
+
+    public function getTotalProperty()
+    {
+        $total = 0;
+        foreach ($this->cartItems as $item) {
+            $total += $item['subtotal'];
+        }
+        return $total;
+    }
 };
 ?>
+
+
 
 <div class="container mx-auto p-6">
     <h1 class="text-3xl font-bold mb-6">Panier</h1>
 
-    @if (empty($this->getCartItemProperty()))
+    @if (empty($this->cartItems))
         <p class="text-gray-500">Votre panier est vide.</p>
     @else
         <div class="overflow-x-auto">
@@ -61,7 +93,7 @@ new class extends Component
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($this->getCartItemProperty() as $item)
+                    @foreach ($this->cartItems as $item)
                         <tr>
                             <td class="flex items-center space-x-4">
                                 @if (isset($item['product']->image))
@@ -71,9 +103,9 @@ new class extends Component
                                 <span>{{ $item['product']->title }}</span>
                             </td>
                             <td>
-                                <button wire:click="decrement">-</button>
+                                <button wire:click="decrement({{ $item['product']->id }})">-</button>
                                 {{ $item['quantity'] }}
-                                <button wire:click="increment">+</button>
+                                <button wire:click="increment({{ $item['product']->id }})">+</button>
                             </td>
                             <td>{{ number_format($item['product']->price, 2) }} €</td>
                             <td>{{ number_format($item['subtotal'], 2) }} €</td>
@@ -85,9 +117,12 @@ new class extends Component
             <div class="flex justify-end mt-6">
                 <div class="text-right">
                     <h2 class="text-xl font-semibold">
-                        Total : {{ number_format(collect($this->getCartItemProperty())->sum('subtotal'), 2) }} €
+                        Total : {{ number_format($this->total, 2) }} €
                     </h2>
-                    <button class="btn btn-primary mt-3">Passer à la commande</button>
+                    <form action="{{ route('checkout') }}" method="POST">
+                        @csrf
+                        <button class="btn btn-primary mt-3">Passer à la commande</button>
+                    </form>
                 </div>
             </div>
         </div>

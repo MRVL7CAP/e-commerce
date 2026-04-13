@@ -17,7 +17,7 @@ class HomeController extends Controller
 
         if ($request->filled('q')) {
             $query->where('title', 'like', '%' . $request->q . '%');
-        }
+        };
         if ($request->filled('category')) {
             $query->where('category', "=", $request->query('category'));
         };
@@ -38,7 +38,7 @@ class HomeController extends Controller
         $product->load('category');
 
 
-        $product->content =  (new Markdown())->setContent($product->content)->getHtml();
+      //  $product->content =  (new ())->setContent($product->content)->getHtml();
 
         return view('products.show', compact('product'));
     }
