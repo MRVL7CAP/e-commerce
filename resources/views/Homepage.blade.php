@@ -89,7 +89,8 @@
         </div>
       </article>
     @endforeach
-
-  </div>
+            </div> class="mt-4">
+            {{ $products->links() }}
+        </div>
 </section>
 @endsection
