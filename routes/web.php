@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -44,9 +45,13 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/invoice/{order}', [ProfileController::class, 'invoice'])->name('profile.invoice');
+
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 });
-
 
 
 Route::prefix('admin')
@@ -59,7 +64,5 @@ Route::prefix('admin')
 
         Route::resource('products', ProductController::class);
         Route::get('categories/products-count', [CategoryController::class, 'count']);
-Route::resource('categories', CategoryController::class);
-
+        Route::resource('categories', CategoryController::class);
     });
-

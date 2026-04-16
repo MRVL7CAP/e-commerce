@@ -8,6 +8,11 @@ use Illuminate\Validation\Rule;
 
 class ProfileUpdateRequest extends FormRequest
 {
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,6 +30,14 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'billing_address' => ['nullable', 'string', 'max:255'],
+            'billing_city' => ['nullable', 'string', 'max:255'],
+            'billing_zip' => ['nullable', 'string', 'max:50'],
+            'billing_country' => ['nullable', 'string', 'max:255'],
+            'shipping_address' => ['nullable', 'string', 'max:255'],
+            'shipping_city' => ['nullable', 'string', 'max:255'],
+            'shipping_zip' => ['nullable', 'string', 'max:50'],
+            'shipping_country' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

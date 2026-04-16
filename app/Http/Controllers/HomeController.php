@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
-use FastVolt\Helper\Markdown;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -19,8 +17,8 @@ class HomeController extends Controller
             $query->where('title', 'like', '%' . $request->q . '%');
         };
         if ($request->filled('category')) {
-            $query->where('category', "=", $request->query('category'));
-        };
+            $query->where('category_id', $request->query('category'));
+        }
 
         $query->where('is_published', true);
 

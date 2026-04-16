@@ -2,10 +2,45 @@
 
 @section('body')
 <section class="max-w-6xl mx-auto px-4 py-10">
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 xl:grid-cols-[280px_1fr] gap-8">
+    <aside class="space-y-6">
+      <form method="GET" action="{{ route('home') }}" class="card bg-base-100 shadow-sm p-4 space-y-4">
+        <h2 class="text-lg font-semibold">Recherche</h2>
+        <input
+          type="text"
+          name="q"
+          value="{{ request('q') }}"
+          placeholder="Rechercher un produit..."
+          class="input input-bordered w-full"
+        />
+        <button type="submit" class="btn btn-primary w-full">Rechercher</button>
+      </form>
 
+      <div class="card bg-base-100 shadow-sm p-4">
+        <h2 class="text-lg font-semibold mb-4">Catégories</h2>
+        <ul class="space-y-2">
+          <li>
+            <a href="{{ route('home', array_filter(['q' => request('q')])) }}"
+               class="block rounded-lg px-3 py-2 {{ request()->filled('category') ? 'hover:bg-base-200' : 'bg-base-200 font-semibold' }}">
+              Toutes les catégories
+            </a>
+          </li>
+          @foreach($categories as $category)
+            <li>
+              <a href="{{ route('home', ['category' => $category->id, 'q' => request('q')]) }}"
+                 class="block rounded-lg px-3 py-2 {{ request('category') == $category->id ? 'bg-base-200 font-semibold' : 'hover:bg-base-200' }}">
+                {{ $category->name }}
+              </a>
+            </li>
+          @endforeach
+        </ul>
+      </div>
+    </aside>
 
-    @foreach($products as $product)
+    <div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        @foreach($products as $product)
       @php
         $img = $product->image;
         $isUrl = $img && (str_starts_with($img, 'http://') || str_starts_with($img, 'https://'));
