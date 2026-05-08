@@ -32,7 +32,7 @@ Route::get('/checkout/success', [CheckoutController::class, 'success'])
     ->name('checkout.success')
     ->middleware('auth');
 
-Route::get('/checkout.cancel', [CheckoutController::class, 'cancel'])
+Route::get('/checkout/cancel', [CheckoutController::class, 'cancel'])
     ->name('checkout.cancel')
     ->middleware('auth');
 

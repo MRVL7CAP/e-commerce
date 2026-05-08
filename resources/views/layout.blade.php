@@ -5,13 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  
+    @livewireStyles
 
-    @vite( ['resources/css/app.css', 'resources/js/app.js'])
+
+
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.5.19/src/index.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/markdown-text-editor@0.5.0/dist/markdown-text-editor.min.js"></script>
-   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-text-editor@0.5.0/dist/markdown-text-editor.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/markdown-text-editor@0.5.0/dist/markdown-text-editor.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/markdown-text-editor@0.5.0/dist/markdown-text-editor.min.css">
     <title>@yield('title')</title>
 </head>
 
@@ -30,15 +34,16 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
-                        {{--<span class="badge badge-sm indicator-item">{{array_sum(session()->get('cart'))}}</span>--}}
+                        {{-- <span class="badge badge-sm indicator-item">{{array_sum(session()->get('cart'))}}</span> --}}
                     </div>
                 </div>
                 <div tabindex="0" class="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
                     <div class="card-body">
-                        {{--<span class="text-lg font-bold">{{array_sum(session()->get('cart'))}}</span>--}}
-                        <span class="text-info">Subtotal: $999</span>
+                        {{-- <span class="text-lg font-bold">{{array_sum(session()->get('cart'))}}</span> --}}
+
+                        <span class="text-info">Subtotal: ${{ \App\Models\Product::getTotal() }}</span>
                         <div class="card-actions">
-                            <a href="{{route('cart.index')}}" class="btn btn-primary btn-block">View cart</a>
+                            <a href="{{ route('cart.index') }}" class="btn btn-primary btn-block">View cart</a>
                         </div>
                     </div>
                 </div>
@@ -99,7 +104,7 @@
     @endif
 
     @yield('body')
-
+    @livewireScripts
 </body>
 
 </html>

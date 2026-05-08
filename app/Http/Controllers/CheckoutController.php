@@ -118,6 +118,6 @@ class CheckoutController extends Controller
     }
 
     public function cancel() {
-        return redirect()->route("home")->with("error", "paiement annullé");
+        return redirect()->route("home")->with("error", "paiement annulé");
     }
 }

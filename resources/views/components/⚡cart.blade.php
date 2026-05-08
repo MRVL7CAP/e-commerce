@@ -40,8 +40,8 @@ new class extends Component {
     {
         if (isset($this->cart[$id])) {
             $this->cart[$id]++;
+
             $this->updateSession();
-            $this->cart = $this->cart; // Trigger reactivity
         }
     }
     public function decrement(int $id): void
@@ -90,6 +90,7 @@ new class extends Component {
                         <th>Quantité</th>
                         <th>Prix Unitaire</th>
                         <th>Sous-total</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -97,18 +98,25 @@ new class extends Component {
                         <tr>
                             <td class="flex items-center space-x-4">
                                 @if (isset($item['product']->image))
-                                    <img src="{{ $item['product']->image }}" alt="{{ $item['product']->name }}"
+                                    <img src="/storage/{{ $item['product']->image }}" alt="{{ $item['product']->name }}"
                                         class="w-16 h-16 object-cover rounded">
                                 @endif
                                 <span>{{ $item['product']->title }}</span>
                             </td>
                             <td>
-                                <button wire:click="decrement({{ $item['product']->id }})">-</button>
-                                {{ $item['quantity'] }}
+                                <button type="button" wire:click="decrement({{ $item['product']->id }})">-</button>
+                                <span>{{ $item['quantity'] }}</span>
                                 <button wire:click="increment({{ $item['product']->id }})">+</button>
                             </td>
                             <td>{{ number_format($item['product']->price, 2) }} €</td>
                             <td>{{ number_format($item['subtotal'], 2) }} €</td>
+                            <td>
+                                <button
+                                
+                                 wire:confirm="Are you sure you want to delete this post?"
+                                 wire:click="remove({{ $item['product']->id }})"
+                                    class="btn btn-sm btn-error">Supprimer</button>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -123,6 +131,8 @@ new class extends Component {
                         @csrf
                         <button class="btn btn-primary mt-3">Passer à la commande</button>
                     </form>
+
+
                 </div>
             </div>
         </div>
